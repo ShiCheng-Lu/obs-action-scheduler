@@ -27,12 +27,12 @@ class ActionHandler : public QObject {
 private:
 	void playPauseMedia(const Action &action);
 
-    long long getCurrentTime();
+	long long getCurrentTime();
 
 public:
 	priority_queue<Action> action_queue;
 	QTimer *timer;
-    long long nextWakeTime;
+	long long nextWakeTime;
 
 	ActionHandler();
 

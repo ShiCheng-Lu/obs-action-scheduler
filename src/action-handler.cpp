@@ -21,9 +21,8 @@ bool play_pause_first_item(void *param, obs_source_t *source)
 
 	obs_media_state state = obs_source_media_get_state(source);
 
+	const char *uuid = obs_source_get_uuid(source);
 
-    const char* uuid = obs_source_get_uuid(source);
-    
 	obs_log(LOG_WARNING, "STATE: %d, UUID: %s", state, uuid);
 
 	obs_source_media_play_pause(source, *pause);
@@ -38,7 +37,7 @@ void ActionHandler::playPauseMedia(const Action &action)
 
 	obs_source *source = obs_get_source_by_uuid("2");
 
-    obs_log(LOG_WARNING, "FOUND_SOURCE %x", source);
+	obs_log(LOG_WARNING, "FOUND_SOURCE %x", source);
 
 	obs_source_media_play_pause(source, pause);
 }
@@ -77,14 +76,14 @@ void ActionHandler::update(void)
 		bool pause;
 		switch (action_queue.top().type) {
 		case ActionType::START_SOURCE: {
-            // playPauseMedia(action_queue.top());
+			// playPauseMedia(action_queue.top());
 			pause = false;
 			obs_enum_sources(play_pause_first_item, &pause);
 			break;
 		}
 
 		case ActionType::PAUSE_SOURCE: {
-            // playPauseMedia(action_queue.top());
+			// playPauseMedia(action_queue.top());
 			pause = true;
 			obs_enum_sources(play_pause_first_item, &pause);
 			break;

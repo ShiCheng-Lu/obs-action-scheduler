@@ -29,46 +29,36 @@ OBS_MODULE_USE_DEFAULT_LOCALE(PLUGIN_NAME, "en-US")
 static obs_websocket_vendor vendor;
 static ActionHandler *action_handler;
 
-map<string, ActionType> action_type_map {
-    { "start_media", START_SOURCE },
-    { "pause_media", PAUSE_SOURCE }
-};
+map<string, ActionType> action_type_map{{"start_media", START_SOURCE},
+					{"pause_media", PAUSE_SOURCE}};
 
-void handle_schedule_request(obs_data_t * request_data, obs_data_t * d, void * s)
+void handle_schedule_request(obs_data_t *request_data, obs_data_t *d, void *s)
 {
-	const char * request_data_json = obs_data_get_json_pretty(request_data);
+	const char *request_data_json = obs_data_get_json_pretty(request_data);
 	obs_log(LOG_ERROR, request_data_json);
 
 	string type_str = string(obs_data_get_string(request_data, "type"));
- 	string time_str = string(obs_data_get_string(request_data, "time"));
-	
+	string time_str = string(obs_data_get_string(request_data, "time"));
+
 	ActionType type = action_type_map[type_str];
 	long long time = stoll(time_str);
 
-	switch (type)
-	{
+	switch (type) {
 	case START_SOURCE: {
-		const char* data_str = obs_data_get_string(request_data, "data");
-		action_handler->addItem({
-			time,
-			type,
-			(void *) data_str
-		});
+		const char *data_str =
+			obs_data_get_string(request_data, "data");
+		action_handler->addItem({time, type, (void *)data_str});
 		break;
 	}
 	case PAUSE_SOURCE: {
-		const char* data_str = obs_data_get_string(request_data, "data");
-		action_handler->addItem({
-			time,
-			type,
-			(void *) data_str
-		});
+		const char *data_str =
+			obs_data_get_string(request_data, "data");
+		action_handler->addItem({time, type, (void *)data_str});
 		break;
 	}
 	default:
 		break;
-	}	
-	
+	}
 }
 
 bool obs_module_load(void)
@@ -82,7 +72,8 @@ bool obs_module_load(void)
 void obs_module_post_load(void)
 {
 	vendor = obs_websocket_register_vendor("obs-action-scheduler");
-	obs_websocket_vendor_register_request(vendor, "schedule", handle_schedule_request, NULL);
+	obs_websocket_vendor_register_request(vendor, "schedule",
+					      handle_schedule_request, NULL);
 	obs_log(LOG_ERROR, "action-scheduler vendor loaded");
 }
 
@@ -90,5 +81,3 @@ void obs_module_unload(void)
 {
 	obs_log(LOG_INFO, "plugin unloaded");
 }
-
-
