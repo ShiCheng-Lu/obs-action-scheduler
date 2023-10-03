@@ -41,17 +41,19 @@
     },
     "platformConfig": {
         "macos": {
-            "bundleId": "com.example.obs-plugintemplate"
+            "bundleId": "com.shich.obs-action-scheduler"
         }
     },
-    "name": "obs-plugintemplate",
-    "version": "1.0.0",
-    "author": "Your Name Here",
-    "website": "https://example.com",
-    "email": "me@example.com",
+    "name": "obs-action-scheduler",
+    "version": "0.0.1",
+    "author": "ShiCheng",
+    "website": "https://github.com/ShiCheng-Lu",
+    "email": "",
     "uuids": {
-        "macosPackage": "00000000-0000-0000-0000-000000000000",
-        "macosInstaller": "00000000-0000-0000-0000-000000000000",
-        "windowsApp": "00000000-0000-0000-0000-000000000000"
+        "macosPackage": "fd9b6399-e620-485f-873e-b05d3ce6a6c5",
+        "macosInstaller": "79ed78d1-6209-41a4-857c-56192a0fe757",
+        "windowsApp": "f2198b89-2346-4337-b008-876fc36d4c6c"
     }
 }
+
+

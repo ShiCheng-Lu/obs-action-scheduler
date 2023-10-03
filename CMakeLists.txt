@@ -21,7 +21,7 @@ if(ENABLE_FRONTEND_API)
   target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::obs-frontend-api)
 endif()
 
-if(ENABLE_QT)
+# if(ENABLE_QT)
   find_qt(COMPONENTS Widgets Core)
   target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::Core Qt::Widgets)
   target_compile_options(
@@ -32,8 +32,11 @@ if(ENABLE_QT)
     PROPERTIES AUTOMOC ON
                AUTOUIC ON
                AUTORCC ON)
-endif()
+# endif()
 
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/plugin-main.c)
+target_sources(
+  ${CMAKE_PROJECT_NAME} 
+  PRIVATE src/plugin-main.cpp
+          src/action-handler.cpp)
 
 set_target_properties_plugin(${CMAKE_PROJECT_NAME} PROPERTIES OUTPUT_NAME ${_name})
