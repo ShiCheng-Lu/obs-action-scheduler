@@ -29,8 +29,10 @@ OBS_MODULE_USE_DEFAULT_LOCALE(PLUGIN_NAME, "en-US")
 static obs_websocket_vendor vendor;
 static ActionHandler *action_handler;
 
-map<string, ActionType> action_type_map{{"start_media", START_SOURCE},
-					{"pause_media", PAUSE_SOURCE}};
+map<string, ActionType> action_type_map{
+	{"start_media", START_SOURCE},
+	{"pause_media", PAUSE_SOURCE},
+};
 
 void handle_schedule_request(obs_data_t *request_data, obs_data_t *d, void *s)
 {
@@ -43,22 +45,9 @@ void handle_schedule_request(obs_data_t *request_data, obs_data_t *d, void *s)
 	ActionType type = action_type_map[type_str];
 	long long time = stoll(time_str);
 
-	switch (type) {
-	case START_SOURCE: {
-		const char *data_str =
-			obs_data_get_string(request_data, "data");
-		action_handler->addItem({time, type, (void *)data_str});
-		break;
-	}
-	case PAUSE_SOURCE: {
-		const char *data_str =
-			obs_data_get_string(request_data, "data");
-		action_handler->addItem({time, type, (void *)data_str});
-		break;
-	}
-	default:
-		break;
-	}
+	string *data_str =
+		new string(obs_data_get_string(request_data, "data"));
+	action_handler->addItem({time, type, data_str});
 }
 
 bool obs_module_load(void)

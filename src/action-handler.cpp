@@ -13,31 +13,14 @@ ActionHandler::ActionHandler()
 	timer->start(1);
 }
 
-bool play_pause_first_item(void *param, obs_source_t *source)
-{
-	bool *pause = (bool *)param;
-
-	obs_log(LOG_WARNING, "FOUND SOURCE");
-
-	obs_media_state state = obs_source_media_get_state(source);
-
-	const char *uuid = obs_source_get_uuid(source);
-
-	obs_log(LOG_WARNING, "STATE: %d, UUID: %s", state, uuid);
-
-	obs_source_media_play_pause(source, *pause);
-
-	return true;
-}
-
 void ActionHandler::playPauseMedia(const Action &action)
 {
-	const char *uuid = (char *)action.data;
+	string *name = (string *)action.data;
 	bool pause = (action.type == ActionType::PAUSE_SOURCE);
 
-	obs_source *source = obs_get_source_by_uuid("2");
+	obs_source *source = obs_get_source_by_name((*name).c_str());
 
-	obs_log(LOG_WARNING, "FOUND_SOURCE %x", source);
+	obs_log(LOG_DEBUG, "FOUND_SOURCE %x, SEARCHING: %s", source, name);
 
 	obs_source_media_play_pause(source, pause);
 }
@@ -61,7 +44,7 @@ void ActionHandler::addItem(Action action)
 
 	//     obs_log(LOG_WARNING, "TIMER STARTED FOR %d", nextWakeTime - currentTime);
 	// }
-	obs_log(LOG_WARNING, "ITEM ADDED");
+	obs_log(LOG_DEBUG, "ITEM ADDED");
 }
 
 void ActionHandler::update(void)
@@ -72,26 +55,8 @@ void ActionHandler::update(void)
 
 	while (!action_queue.empty() &&
 	       getCurrentTime() > action_queue.top().time) {
-		obs_log(LOG_WARNING, "ACTION TIME REACHED");
-		bool pause;
-		switch (action_queue.top().type) {
-		case ActionType::START_SOURCE: {
-			// playPauseMedia(action_queue.top());
-			pause = false;
-			obs_enum_sources(play_pause_first_item, &pause);
-			break;
-		}
-
-		case ActionType::PAUSE_SOURCE: {
-			// playPauseMedia(action_queue.top());
-			pause = true;
-			obs_enum_sources(play_pause_first_item, &pause);
-			break;
-		}
-		default:
-			break;
-		}
-
+		obs_log(LOG_DEBUG, "ACTION TIME REACHED");
+		playPauseMedia(action_queue.top());
 		action_queue.pop();
 	}
 }
